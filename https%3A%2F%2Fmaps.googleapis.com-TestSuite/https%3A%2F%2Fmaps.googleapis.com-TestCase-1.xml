@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="c682e3ab-8896-4ae6-a7a3-68bbd745bf52" discardOkResults="false" failOnError="false" failTestCaseOnErrors="true" keepSession="false" name="https://maps.googleapis.com TestCase 1" searchProperties="true" timeout="0" xmlns:con="http://eviware.com/soapui/config">
+  <con:settings>
+    <con:setting id="IncludeOverview">true</con:setting>
+    <con:setting id="IncludeResults">true</con:setting>
+    <con:setting id="FlowLayout">false</con:setting>
+    <con:setting id="ErrorDetails">true</con:setting>
+    <con:setting id="IncludeCoverage">true</con:setting>
+    <con:setting id="GeneratableAllureReport@Folder">C:\Users\Corey.Vernon\Desktop\ReadyAPI\Reports\Allure</con:setting>
+    <con:setting id="c682e3ab-8896-4ae6-a7a3-68bbd745bf52fileName">https%3A%2F%2Fmaps.googleapis.com-TestCase-1</con:setting>
+  </con:settings>
+  <con:savedRecentRuns>1</con:savedRecentRuns>
+  <con:testStep type="datasource" name="External" id="5a1f70d3-5240-4109-ad2f-cd0758d33e11">
+    <con:settings/>
+    <con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:dataSource type="Excel">
+        <con:configuration>
+          <file>C:/Users/Corey.Vernon/Desktop/Test/Cities.xlsx</file>
+          <worksheet/>
+          <cell>A1</cell>
+          <ignoreEmpty>false</ignoreEmpty>
+          <evaluateFormulas>false</evaluateFormulas>
+        </con:configuration>
+      </con:dataSource>
+      <con:shared>true</con:shared>
+      <con:restartShared>true</con:restartShared>
+      <con:property>City</con:property>
+      <con:property>Expected State</con:property>
+      <con:startRow>1</con:startRow>
+      <con:endRow/>
+      <con:recordsPerIteration>1</con:recordsPerIteration>
+      <con:completeLastOperation>true</con:completeLastOperation>
+      <con:trimValues>false</con:trimValues>
+      <con:entitizeValues>false</con:entitizeValues>
+      <con:restartOnRun>true</con:restartOnRun>
+      <con:expandProperties>false</con:expandProperties>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="datasource" name="Internal" id="7c209f55-1e78-4fda-833e-226cbee7dc2f">
+    <con:settings/>
+    <con:config xsi:type="con:DataSourceStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:dataSource type="Data Generator">
+        <con:configuration>
+          <generatedDataCount>10</generatedDataCount>
+          <generatorsTotalNumber>1</generatorsTotalNumber>
+          <lastSelectedProperty>0</lastSelectedProperty>
+          <GeneratorType0>CITY</GeneratorType0>
+          <PropertyName0>City</PropertyName0>
+          <repetitionCountCity>0</repetitionCountCity>
+          <repeatValuesCity>false</repeatValuesCity>
+          <escapeSpaceSequence/>
+        </con:configuration>
+      </con:dataSource>
+      <con:shared>true</con:shared>
+      <con:restartShared>true</con:restartShared>
+      <con:property>City</con:property>
+      <con:restartOnRun>true</con:restartOnRun>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="restrequest" name="Request 1" id="1930add9-9dab-4b8a-a642-24a248d58c4d">
+    <con:settings/>
+    <con:config service="https://maps.googleapis.com" resourcePath="/maps/api/geocode/json" methodName="Json" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <con:restRequest name="Request 1" id="6ac97f2e-1a82-4779-899f-94cc4a25a34c" mediaType="application/json">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
+        <con:endpoint>https://maps.googleapis.com</con:endpoint>
+        <con:request/>
+        <con:originalUri>https://maps.googleapis.com/maps/api/geocode/json</con:originalUri>
+        <con:assertion type="Valid HTTP Status Codes" id="9111768f-0692-49ac-830b-2aae3cc36141" name="Valid HTTP Status Codes">
+          <con:settings/>
+          <con:configuration>
+            <codes>200</codes>
+          </con:configuration>
+        </con:assertion>
+        <con:assertion type="JsonPath Match" id="12c822a1-798e-474c-88cd-b6b0836bc84a" name="Match content of [long_name]">
+          <con:configuration>
+            <path>$['results'][0]['address_components'][2]['long_name']</path>
+            <content>"Massachusetts"</content>
+            <allowWildcards>false</allowWildcards>
+            <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+            <ignoreComments>false</ignoreComments>
+          </con:configuration>
+        </con:assertion>
+        <con:credentials>
+          <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:parameters>
+          <con:entry key="address" value="${External#City}"/>
+          <con:entry key="key" value="AIzaSyALx_d1Z24ovZytRKa-17M-wOajKBTRxE8"/>
+        </con:parameters>
+        <con:parameterOrder>
+          <con:entry>address</con:entry>
+          <con:entry>key</con:entry>
+        </con:parameterOrder>
+      </con:restRequest>
+    </con:config>
+  </con:testStep>
+  <con:testStep type="datasourceloop" name="DataSource Loop" id="b627ef02-497c-4806-b58f-f2bc8ff3559d">
+    <con:settings/>
+    <con:config>
+      <dataSourceStep>External</dataSourceStep>
+      <targetStep>Request 1</targetStep>
+      <discardResults>false</discardResults>
+    </con:config>
+  </con:testStep>
+  <con:properties/>
+  <con:reportParameters/>
+  <con:breakPoints>
+    <con:testStepId>5a1f70d3-5240-4109-ad2f-cd0758d33e11</con:testStepId>
+    <con:status>NONE</con:status>
+    <con:properties/>
+  </con:breakPoints>
+  <con:breakPoints>
+    <con:testStepId>b627ef02-497c-4806-b58f-f2bc8ff3559d</con:testStepId>
+    <con:status>NONE</con:status>
+    <con:properties/>
+  </con:breakPoints>
+</con:testCase>
